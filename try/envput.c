@@ -1,3 +1,4 @@
+#include "shell.h"
 /**
  * navPath - tokenizes input command
  * @string: string got

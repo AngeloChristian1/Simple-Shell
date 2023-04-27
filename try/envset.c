@@ -137,4 +137,29 @@ void environmentCopy(void)
 	environmentCopy[i] = NULL;
 	environ = environmentCopy;
 }
+/**
+ * _getenv - get the value of an environment variable
+ * @name: the name of the environment variable to look up
+ *
+ * Return: a pointer to the value of the environment variable, or NULL if the
+ *         variable is not found
+ */
+char *_getenv( char *name)
+{
+        extern char **environ;
+        char *value = NULL;
+        size_t len = _strLen(name);
+        int i;
+
+        for (i = 0; environ[i] != NULL; i++)
+        {
+                if (_strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
+                {
+                        value = environ[i] + len + 1;
+                        break;
+                }
+        }
+
+        return(value);
+}
 

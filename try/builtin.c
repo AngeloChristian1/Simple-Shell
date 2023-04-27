@@ -1,6 +1,5 @@
 #include "shell.h"
 
-/**
  * isNumber - checks if a string is a number
  * @s: string to check
  *
@@ -88,12 +87,17 @@ void exit_shell(char **argv, int code)
  * @argv: argument vector
  * @source: source file name
  * @code: exit code
+ * @ac: ...
  *
  * Return: 1 if built-in command found, 0 if not found
  */
-int checkBuilt(char **argv, char *source, int code)
+int checkBuilt(int ac, char **argv, char *source, int code)
 {
 	int i = 0;
+	if(isNumber(argv[1]) && ac > 2)
+		{
+			return (checkError(source,argv,6));
+		}
 	if (_strcmp(argv[0], "exit") == 0)
 	{
 		exit_shell(argv, code);

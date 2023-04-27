@@ -1,4 +1,5 @@
 #include "shell.h"
+char *lin = NULL;
 
 /**
  * getLine - function to get line from the prompt
@@ -23,7 +24,7 @@ char *getLine(int code)
 		freeEnv();
 		_exit(code);
 	}
-	line[read] = '\0';
+	lin[read] = '\0';
 	return (buf);
 }
 

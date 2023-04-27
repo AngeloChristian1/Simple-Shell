@@ -1,46 +1,54 @@
 #include "shell.h"
 
 /**
- * main - This is the entry point for the shell program
+ * main - Entry point for the shell program
  * @ac: The number of arguments passed to the program
  * @argv: An array of strings containing the arguments passed to the program
  *
  * Return: Always returns 0
  */
+
 int main(__attribute__((unused)) int ac, char *argv[])
 {
+    int i = 0;
+    int freeflag = 0;
+    int n = 0;
     int status;
+    int built = 0;
+    int track = 0;
+    int fpath = 0;
+    char **argvs;
+    char *code;
     pid_t child;
 
     signal(SIGINT, SIG_IGN);
     environmentCopy();
 
-    while (1)
+    while (i == 0)
     {
-        char *code = getLine(0);
+        code = getLine(track);
         line++;
+        argvs = _strtok(code);
 
-        char **argvs = _strtok(code);
-        int n = 0;
         while (argvs[n])
             n++;
 
-        int built = checkBuilt(n, argvs, argv[0], 0);
-        int fpath = 0;
-        int freeflag = 0;
+        built = checkBuilt(n, argvs, argv[0], track);
+        n = 0;
 
         if (built == 0)
         {
             fpath = navPath(&argvs[0], &freeflag);
-            int track = checkError(argv[0], argvs, fpath);
-            if (track != 0)
-            {
-                free(argvs);
-                free(code);
-                continue;
-            }
+            track = checkError(argv[0], argvs, fpath);
         }
-        else if (built == NULL)
+        track = built;
+
+        if (built == -1)
+        {
+            continue;
+        }
+
+        if (argvs[0] == NULL || built != 0 || fpath != 0)
         {
             free(argvs);
             free(code);
@@ -48,6 +56,7 @@ int main(__attribute__((unused)) int ac, char *argv[])
         }
 
         child = fork();
+
         if (child == 0)
         {
             if (execve(argvs[0], argvs, environ) == -1)
@@ -59,10 +68,10 @@ int main(__attribute__((unused)) int ac, char *argv[])
         {
             wait(&status);
         }
-
         free(argvs);
         free(code);
     }
 
     return (0);
 }
+
