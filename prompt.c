@@ -7,9 +7,9 @@
 **/
 hstory **getHistoryHead(void)
 {
-	static hstory *head = NULL;
+static hstory *head = NULL;
 
-	return (&head);
+return (&head);
 }
 
 /**
@@ -19,9 +19,9 @@ hstory **getHistoryHead(void)
 **/
 alias **getAliasHead(void)
 {
-	static alias *head = NULL;
+static alias *head = NULL;
 
-	return (&head);
+return (&head);
 }
 
 /**
@@ -32,37 +32,37 @@ alias **getAliasHead(void)
 **/
 void excute(char **tokens)
 {
-	pid_t pid;
-	int status;
-	char *p;
+pid_t pid;
+int status;
+char *p;
 
-	if (tokens[0][0] != '/')
-	{
-		if (find_builtins(tokens) == 0)
-			return;
-	}
-	pid = fork();
-	if (pid == -1)
-	{
- 		_puts("Forking Error\n");
-		ext(NULL);
-	}
-	if (pid == 0)
-	{
-		/* Create a special node at beginning of child.. */
-		/* After child is done, free up all nodes until this node */
-		/* NOTE: because nodes were prepended */
-		p = NULL;
-		if (tokens[0][0] != '/')
-			check_path(tokens, p);
-		else if (execve(tokens[0], tokens, NULL) == -1)
-		{
-		  _puts("No such file or directory\n");
-		  ext(NULL);
-	        }
-	}
-	else
-		waitpid(pid, &status, 0);
+if (tokens[0][0] != '/')
+{
+if (find_builtins(tokens) == 0)
+return;
+}
+pid = fork();
+if (pid == -1)
+{
+_puts("Forking Error\n");
+ext(NULL);
+}
+if (pid == 0)
+{
+/* Create a special node at beginning of child.. */
+/* After child is done, free up all nodes until this node */
+/* NOTE: because nodes were prepended */
+p = NULL;
+if (tokens[0][0] != '/')
+check_path(tokens, p);
+else if (execve(tokens[0], tokens, NULL) == -1)
+{
+_puts("No such file or directory\n");
+ext(NULL);
+}
+}
+else
+waitpid(pid, &status, 0);
 }
 
 
@@ -74,13 +74,13 @@ void excute(char **tokens)
 **/
 char *linep_withoutspaces(char *line)
 {
-	/* no need to null check, as empty string will not be passed  */
-	if (*line == ' ')
-	{
-		line++;
-		return (linep_withoutspaces(line));
-	}
-	return (line);
+/* no need to null check, as empty string will not be passed  */
+if (*line == ' ')
+{
+line++;
+return (linep_withoutspaces(line));
+}
+return (line);
 }
 
 /**
@@ -89,78 +89,78 @@ char *linep_withoutspaces(char *line)
 **/
 void promptUser(void)
 {
-	char *input, **tokens, **cmds;
-	int hstryCount, *hstryPtr;
-	char *file;
-	hstory **h_head;
-	alias **a_head, *temp;
+char *input, **tokens, **cmds;
+int hstryCount, *hstryPtr;
+char *file;
+hstory **h_head;
+alias **a_head, *temp;
 
-	input = NULL;
-	tokens = NULL;
-	cmds = NULL;
-	temp = NULL;
-	h_head = getHistoryHead();
-	a_head = getAliasHead();
-	hstryCount = 0;
-	hstryPtr = &hstryCount;
-	file = _strcat(_getenv("HOME"), ".simple_shell_history", '/');
-	/* read history from file */
-	readFromFile(file, h_head, hstryPtr);
+input = NULL;
+tokens = NULL;
+cmds = NULL;
+temp = NULL;
+h_head = getHistoryHead();
+a_head = getAliasHead();
+hstryCount = 0;
+hstryPtr = &hstryCount;
+file = _strcat(_getenv("HOME"), ".simple_shell_history", '/');
+/* read history from file */
+readFromFile(file, h_head, hstryPtr);
 
-	/* ignore cntrl+C */
-	signal(SIGINT, SIG_IGN);
-	_puts("$ ");
- 	while (_getline(&input, STDIN_FILENO) != 0)
-	{
-		addHistory(h_head, input, hstryPtr);
-		/* discard the begining spaces */
-		input = linep_withoutspaces(input);
-		if (*input != '\0')
-		{
-			/* command separator */
-			cmds = tokenize(input, ';');
-			if (cmds)
-			{
-				while (*cmds)
-				{
-					/* add cyclic alias */
-					temp = findAlias(a_head, *cmds);
-					/* check if an alias is not pointing to itself */
-					if (temp != NULL && (_strcmp(temp->key, temp->value) != 0))
-					{
-						temp = find_aliasToalias(a_head, temp->value);
-						*cmds = temp->value;
-					}
-					tokens = tokenize(*cmds, ' ');
-					if (tokens)
-					{
-						excute(tokens);
-						_free(tokens);
-					}
-					cmds++;
-				}
-			}
-			else
-			{
-				/* add cyclic alias */
-				temp = findAlias(a_head, *cmds);
-				/* check if an alias is not pointing to itself */
-				if (temp != NULL && (_strcmp(temp->key, temp->value) != 0))
-				{
-					temp = find_aliasToalias(a_head, temp->value);
-					*cmds = temp->value;
-				}
-				tokens = tokenize(*cmds, ' ');
-				if (tokens)
-				{
-					excute(tokens);
-					_free(tokens);
-				}
-			}
-			_free(cmds);
-		} /* input if block ends */
-		_puts("$ ");
-	}
-	/* need to read history before exit */
-	ext(NULL);
+/* ignore cntrl+C */
+signal(SIGINT, SIG_IGN);
+_puts("$ ");
+while (_getline(&input, STDIN_FILENO) != 0)
+{
+addHistory(h_head, input, hstryPtr);
+/* discard the begining spaces */
+input = linep_withoutspaces(input);
+if (*input != '\0')
+{
+/* command separator */
+cmds = tokenize(input, ';');
+if (cmds)
+{
+while (*cmds)
+{
+/* add cyclic alias */
+temp = findAlias(a_head, *cmds);
+/* check if an alias is not pointing to itself */
+if (temp != NULL && (_strcmp(temp->key, temp->value) != 0))
+{
+temp = find_aliasToalias(a_head, temp->value);
+*cmds = temp->value;
+}
+tokens = tokenize(*cmds, ' ');
+if (tokens)
+{
+excute(tokens);
+_free(tokens);
+}
+cmds++;
+}
+}
+else
+{
+/* add cyclic alias */
+temp = findAlias(a_head, *cmds);
+/* check if an alias is not pointing to itself */
+if (temp != NULL && (_strcmp(temp->key, temp->value) != 0))
+{
+temp = find_aliasToalias(a_head, temp->value);
+*cmds = temp->value;
+}
+tokens = tokenize(*cmds, ' ');
+if (tokens)
+{
+excute(tokens);
+_free(tokens);
+}
+}
+_free(cmds);
+} /* input if block ends */
+_puts("$ ");
+}
+/* need to read history before exit */
+ext(NULL);
 }
