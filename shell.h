@@ -43,8 +43,8 @@
 **/
 typedef struct in_built
 {
-	char *s;
-	void (*func) (char **);
+char *s;
+void (*func)(char **);
 } in_built;
 
 
@@ -56,9 +56,9 @@ typedef struct in_built
 **/
 typedef struct alias
 {
-	char *key;
-	char *value;
-	struct alias *next;
+char *key;
+char *value;
+struct alias *next;
 } alias;
 
 /**
@@ -68,8 +68,8 @@ typedef struct alias
 **/
 typedef struct hstory
 {
-        char *input;
-        struct hstory *next;
+char *input;
+struct hstory *next;
 } hstory;
 
 /**
@@ -80,11 +80,10 @@ typedef struct hstory
 **/
 typedef struct help_struct
 {
-	char *cmd;
-	char *synopsis;
-	void (*func) ();
+char *cmd;
+char *synopsis;
+void (*func)();
 } help_struct;
-
 
 /**
 * struct save_mem - define a struct for saving refernces to allocated memory
@@ -93,8 +92,8 @@ typedef struct help_struct
 **/
 typedef struct save_mem
 {
-	void *loc;
-	struct save_mem *next;
+void *loc;
+struct save_mem *next;
 } save_mem;
 
 hstory **getHistoryHead(void);
