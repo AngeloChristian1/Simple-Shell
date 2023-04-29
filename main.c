@@ -2,6 +2,6 @@
 
 int main(void)
 {
-        shell();
+        promptUser();
         return (0);
 }

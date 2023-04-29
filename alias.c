@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /* for tracking the last found alias match */
-static alias *match;
+static alias *match = NULL;
 
 /**
 * resetAlias - resets an alias to given values, if found in the list
@@ -38,9 +38,11 @@ alias *addAlias(alias **head, char *key, char *value)
 {
 alias *new, *temp;
 int valueLen;
+
 new = _malloc(sizeof(alias));
 if (new == NULL)
 return (NULL);
+
 new->key = _strcpy(key, _strlen(key));
 if (new->key == NULL)
 {
@@ -48,6 +50,7 @@ _free(new);
 return (NULL);
 }
 valueLen = _strlen(value);
+
 if (value[0] == '"')
 {
 value++;
@@ -62,6 +65,7 @@ _free(new);
 return (NULL);
 }
 new->next = NULL;
+
 if (*head == NULL)
 {
 *head = new;
